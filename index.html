@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>World War 3</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
+        #main-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
+        #background-map { 
+            background: url('start.jpg') no-repeat center center; 
+            background-size: contain; 
+            width: 100%; height: 100%; position: absolute; z-index: 1; 
+        }
+        .ui-overlay { 
+            position: absolute; z-index: 2; top: 72%; width: 100%; 
+            display: flex; flex-direction: column; align-items: center; gap: 10px; 
+        }
+        .input-field { 
+            width: 250px; padding: 12px; border: 2px solid #ff0000; 
+            background: rgba(0,0,0,0.8); color: #fff; text-align: center; font-weight: bold;
+        }
+        #btn-activate { 
+            width: 278px; padding: 15px; background: #ff0000; color: #fff; 
+            border: none; font-weight: bold; cursor: pointer; font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="main-container">
+    <div id="background-map"></div>
+    <div class="ui-overlay">
+        <input type="text" id="user-id" class="input-field" placeholder="ID RECRUT">
+        <input type="password" id="user-pass" class="input-field" placeholder="COD ACCES">
+        <button id="btn-activate" onclick="salveazaRecrut()">ACTIVEAZĂ UNITATEA</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCZWA9HfF2vpxS-o3R4jTW3Pgzot8EtQN4",
+    authDomain: "world-war-3-84b0f.firebaseapp.com",
+    databaseURL: "https://world-war-3-84b0f-default-rtdb.firebaseio.com/",
+    projectId: "world-war-3-84b0f",
+    storageBucket: "world-war-3-84b0f.firebasestorage.app",
+    messagingSenderId: "697325755845",
+    appId: "1:697325755845:web:482887c50c2add41e97fac"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  function salveazaRecrut() {
+    var user = document.getElementById('user-id').value;
+    var pass = document.getElementById('user-pass').value;
+
+    if(user !== "" && pass !== "") {
+        database.ref('recruti/' + user).set({
+          cod_acces: pass,
+          timestamp: new Date().toLocaleString()
+        })
+        .then(() => { alert('UNITATE ACTIVATĂ, AMIRALE!'); })
+        .catch((error) => { alert('EROARE: ' + error.message); });
+    } else {
+        alert('EROARE: Introdu ID și COD!');
+    }
+  }
+</script>
+</body>
+</html>
