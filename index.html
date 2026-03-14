@@ -69,16 +69,20 @@
   const database = firebase.database();
 
   function salveazaRecrut() {
-    var user = document.getElementById('user-id').value;
-    var pass = document.getElementById('user-pass').value;
+    var user = document.getElementById('user-id').value.trim();
+    var pass = document.getElementById('user-pass').value.trim();
 
     if(user !== "" && pass !== "") {
         // Salvare în baza de date
         database.ref('recruti/' + user).set({
           cod_acces: pass,
-          timestamp: new Date().toLocaleString()
+          timestamp: new Date().toLocaleString(),
+          status: "activ"
         })
         .then(() => { 
+            // Salvăm numele local pentru a-l folosi pe harta.html
+            localStorage.setItem('nume_comandant', user);
+            
             // Mesaj succes și redirecționare către harta.html
             alert('UNITATE ACTIVATĂ, AMIRALE!'); 
             window.location.href = 'harta.html'; 
