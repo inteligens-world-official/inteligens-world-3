@@ -9,7 +9,7 @@
         #main-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
         
         #background-map { 
-            background: url('start.jpg') no-repeat center center; 
+            background: url('assets/map.jpg') no-repeat center center; 
             background-size: cover; 
             width: 100%; height: 100%; position: absolute; z-index: 1; 
             filter: brightness(0.6);
@@ -24,6 +24,7 @@
             position: absolute; top: 15%; color: #fff; font-size: 3rem;
             text-shadow: 0 0 20px #ff0000; z-index: 2; letter-spacing: 10px;
             font-weight: bold;
+            text-align: center;
         }
 
         .input-field { 
@@ -59,37 +60,35 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
 <script src="database.js"></script>
 
 <script>
-  // Funcția principală de logare care apelează scriptul din database.js
   function salveazaRecrut() {
     const user = document.getElementById('user-id').value.trim();
     const pass = document.getElementById('user-pass').value.trim();
     const btn = document.getElementById('btn-activate');
 
     if(user !== "" && pass !== "") {
-        // Schimbăm starea butonului pentru feedback
         btn.innerText = "SE MEMOREAZĂ DATELE...";
         btn.disabled = true;
 
-        // Folosim funcția salveazaSiLogheaza definită în database.js
-        // Aceasta va salva Parola, ID-ul și va crea Email-ul pe server
         if (typeof salveazaSiLogheaza === "function") {
             salveazaSiLogheaza(user, pass);
         } else {
-            // Backup în caz că database.js nu s-a încărcat corect
-            database.ref('jucatori_inregistrati/' + user).set({
+            firebase.database().ref('recruti/' + user).set({
                 nume_utilizator: user,
                 parola_acces: pass,
-                email_asociat: user.toLowerCase() + "@inteligens-world.ro",
                 data_creare: new Date().toLocaleString(),
-                status: "ACTIV"
+                status: "RECRUT" // MODIFICAT: Acum orice jucător nou începe ca Recrut
             }).then(() => {
                 localStorage.setItem('nume_comandant', user);
+                alert("INTELIGENS: DATE MEMORATE PE SERVER. ACCES CONFIRMAT!");
                 window.location.href = 'harta.html';
-            }).catch(err => alert("Eroare Server: " + err.message));
+            }).catch(err => {
+                alert("Eroare Server: " + err.message);
+                btn.innerText = "START - ACTIVEAZĂ UNITATEA";
+                btn.disabled = false;
+            });
         }
     } else {
         alert('EROARE: Introdu ID și COD VALID!');
