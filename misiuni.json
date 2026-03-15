@@ -1,31 +1,61 @@
 {
   "project": "World War 3 - Season 1",
+  "version": "1.0.0",
   "global_metrics": {
     "hp_regen_rate": 0.15,
-    "shield_efficiency": 0.90
+    "shield_efficiency": 0.90,
+    "global_precision_offset": 0.90
   },
   "misiuni_active": [
     {
       "id": "mission_01",
       "nume": "Recuperare Tehnologică Australia",
-      "cerinte": { "nivel": 1, "energie_cost": 20 },
+      "status": "available",
+      "cerinte": {
+        "nivel_minim": 1,
+        "energie_cost": 20,
+        "durata_secunde": 300
+      },
       "recompense": {
         "hp_unitati": 100,
         "scut_bits": 50,
-        "energie_bonus": 10
+        "energie_bonus": 10,
+        "xp": 150
       },
-      "descriere": "Sincronizează sateliții pentru a activa scuturile de protecție asupra minelor de Uraniu."
+      "descriere": "Sincronizează sateliții pentru a activa scuturile de protecție asupra minelor de Uraniu din zona Outback."
     },
     {
       "id": "mission_02",
       "nume": "Patrula de Coastă (Submarin)",
-      "cerinte": { "unitate": "SUBMARIN_NUC", "timp": "5m" },
+      "status": "locked",
+      "cerinte": {
+        "unitate_necesara": "SUBMARIN_NUC",
+        "energie_cost": 45,
+        "durata_secunde": 600
+      },
       "recompense": {
         "hp_unitati": 250,
-        "scut_bits": 0,
-        "deblocare_radar": true
+        "scut_bits": 15,
+        "deblocare_radar": 1,
+        "xp": 400
       },
-      "descriere": "Folosește stealth-ul submarinului pentru a livra kit-uri de reparații bazelor izolate."
+      "descriere": "Folosește tehnologia stealth a submarinului pentru a livra kit-uri de reparații nanotehnologice bazelor izolate din Pacific."
+    },
+    {
+      "id": "mission_03",
+      "nume": "Sabotaj Digital KHAOS",
+      "status": "available",
+      "cerinte": {
+        "factiune": "KHAOS",
+        "energie_cost": 30,
+        "durata_secunde": 450
+      },
+      "recompense": {
+        "hp_unitati": 50,
+        "scut_bits": 200,
+        "damage_bonus_temp": 0.10
+      },
+      "descriere": "Injectează viruși în rețeaua Zenith pentru a fura biți de date necesari Loviturii Orbitale."
     }
   ]
 }
