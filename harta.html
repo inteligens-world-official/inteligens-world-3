@@ -2,9 +2,17 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>World War 3 - Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>World War 3 - Strategic Hierarchy</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #000; }
+        :root {
+            /* Tema implicită (Verde) */
+            --theme-color: #0f0; 
+            --bg-glow: rgba(0, 255, 0, 0.2);
+        }
+
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Courier New', monospace; }
+        
         #game-container {
             width: 100vw;
             height: 100vh;
@@ -13,20 +21,164 @@
             background-repeat: no-repeat;
             position: relative;
         }
+
+        /* Panou Info Stânga Sus */
         #ui-text {
             position: absolute;
             top: 10px;
             left: 10px;
-            color: #0f0;
-            font-family: monospace;
-            background: rgba(0,0,0,0.5);
-            padding: 5px;
+            color: var(--theme-color);
+            background: rgba(0, 0, 0, 0.85);
+            padding: 12px;
+            border-left: 4px solid var(--theme-color);
+            font-size: 14px;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
+
+        /* Cartela ID Dreapta Sus */
+        #id-card {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 320px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--theme-color);
+            border-radius: 4px;
+            padding: 15px;
+            color: var(--theme-color);
+            box-shadow: 0 0 20px var(--bg-glow);
+            z-index: 100;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-header { 
+            font-size: 10px; 
+            border-bottom: 1px solid var(--theme-color); 
+            margin-bottom: 10px; 
+            padding-bottom: 5px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .card-content { display: flex; gap: 12px; }
+
+        .avatar-box {
+            width: 80px;
+            height: 80px;
+            border: 1px solid var(--theme-color);
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .info-box { font-size: 12px; line-height: 1.6; }
+        
+        .status-label { 
+            color: #000; 
+            background: var(--theme-color); 
+            padding: 1px 6px; 
+            font-weight: bold; 
+            font-size: 10px;
+        }
+
+        .welcome-msg {
+            color: #fff;
+            text-shadow: 0 0 8px var(--theme-color);
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Tabel Armată (Sub ID Card) */
+        #army-stats {
+            position: absolute;
+            top: 180px;
+            right: 15px;
+            width: 320px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--theme-color);
+            padding: 10px;
+            color: var(--theme-color);
+            font-size: 11px;
+            z-index: 90;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        th { text-align: left; border-bottom: 1px solid var(--theme-color); padding: 5px; }
+        td { padding: 5px; }
     </style>
 </head>
 <body>
-    <div id="game-container">
-        <div id="ui-text">SISTEM ACTIV: SEZON 1</div>
+
+<div id="game-container">
+    <div id="ui-text">
+        <span class="welcome-msg" id="welcome-user">IDENTIFICARE...</span>
+        SISTEM INTELIGENS: <span id="sys-status">SEZON 1</span>
     </div>
+
+    <div id="id-card">
+        <div class="card-header" id="card-title">INTELIGENS GLOBAL DEFENSE</div>
+        <div class="card-content"><div class="avatar-box" id="avatar-img">FOTO<br>GRAD</div>
+            <div class="info-box">
+                <div>NUME: <span id="display-name">---</span></div>
+                <div>RANG: <span id="display-rank" style="font-weight: bold;">---</span></div>
+                <div>STATUS: <span class="status-label">ACTIV</span></div>
+                <div style="margin-top: 5px; opacity: 0.6; font-size: 9px;">COD: <span id="id-code">IW3-AUTH-001</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="army-stats">
+        <strong>RESURSE UNITATE:</strong>
+        <table>
+            <tr><th>TIP</th><th>CANTITATE</th></tr>
+            <tr><td>Recruți</td><td>10</td></tr>
+            <tr><td>Soldați</td><td>0</td></tr>
+            <tr><td>Buget</td><td>5.000$</td></tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        // Preluăm datele salvate
+        const numeSalvat = localStorage.getItem('nume_comandant') || "Recrut";
+        const gradActual = (localStorage.getItem('rang_jucator') || "RECRUT").toUpperCase(); 
+
+        const root = document.documentElement;
+        const displayRank = document.getElementById('display-rank');
+        const welcomeTxt = document.getElementById('welcome-user');
+        const avatarBox = document.getElementById('avatar-img');
+        const cardTitle = document.getElementById('card-title');
+
+        // Logică Entități: GENERAL și AMIRAL trec pe ROȘU
+        const gradeRosii = ["GENERAL", "AMIRAL"]; 
+        
+        if (gradeRosii.includes(gradActual)) {
+            root.style.setProperty('--theme-color', '#ff0000');
+            root.style.setProperty('--bg-glow', 'rgba(255, 0, 0, 0.4)');
+            cardTitle.innerText = "ACCES NIVEL SUPREM - ENTITATEA ROȘIE";
+        } else {
+            root.style.setProperty('--theme-color', '#0f0');
+            root.style.setProperty('--bg-glow', 'rgba(0, 255, 0, 0.2)');
+            cardTitle.innerText = "ACCES NIVEL OPERATIV - ENTITATEA VERDE";
+        }
+
+        // Aplicare date finale
+        welcomeTxt.innerText = "BINE AI VENIT, " + gradActual + " " + numeSalvat.toUpperCase() + "!";
+        displayRank.innerText = gradActual;
+        avatarBox.innerHTML = gradActual + "<br>UNIT";
+        document.getElementById('display-name').innerText = numeSalvat.toUpperCase();
+        
+        console.log("Sistem ierarhic stabilizat pentru: " + gradActual);
+    };
+</script>
+
 </body>
 </html>
