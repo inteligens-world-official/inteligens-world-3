@@ -1,1 +1,35 @@
+.mission-card {
+    background: #111;
+    border-left: 5px solid #00ff00;
+    margin: 10px;
+    padding: 15px;
+    color: #eee;
+    font-family: 'Courier New', monospace;
+}
 
+.mission-card.locked {
+    border-left: 5px solid #555;
+    opacity: 0.6;
+    filter: grayscale(1);
+}
+
+.efficiency-tag {
+    background: #004400;
+    color: #00ff00;
+    padding: 2px 5px;
+    font-size: 0.8em;
+    border: 1px solid #00ff00;
+}
+
+button {
+    background: #222;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:disabled {
+    color: #555;
+    border-color: #555;
+}
