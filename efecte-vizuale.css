@@ -1,1 +1,77 @@
+/**
+ * WORLD WAR 3 - VISUAL EFFECTS ENGINE (Sezonul 1)
+ * Animații și stiluri pentru atmosferă tactică.
+ */
 
+:root {
+    --theme-color: #0f0;
+    --danger-color: #ff0000;
+    --bg-glow: rgba(0, 255, 0, 0.2);
+}
+
+/* 1. Efectul de Scanare (Scanlines) */
+.scanline-effect {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* 2. Animația de Pulsare (Glow) */
+@keyframes pulse-glow {
+    0% { box-shadow: 0 0 5px var(--theme-color); }
+    50% { box-shadow: 0 0 20px var(--theme-color); }
+    100% { box-shadow: 0 0 5px var(--theme-color); }
+}
+
+.pulsing-node {
+    animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* 3. Efect de Glitch pentru Alerte (Când e detectat Cronus) */
+@keyframes glitch-red {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+.security-alert {
+    color: var(--danger-color) !important;
+    animation: glitch-red 0.2s infinite;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* 4. Efectul de Hover pentru Butoane Tactice */
+.tactical-btn {
+    transition: all 0.3s;
+    border: 1px solid var(--theme-color);
+    background: transparent;
+    color: var(--theme-color);
+    cursor: pointer;
+}
+
+.tactical-btn:hover {
+    background: var(--theme-color);
+    color: #000;
+    box-shadow: 0 0 15px var(--theme-color);
+}
+
+/* 5. Imaginea de fundal cu efect de profunzime */
+.overlay-grid {
+    background-image: linear-gradient(rgba(0, 255, 0, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 255, 0, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
