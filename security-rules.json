@@ -1,1 +1,30 @@
-
+{
+  "security_version": "1.0.2-SECURE",
+  "anti_cheat_settings": {
+    "cronus_detection": {
+      "enabled": true,
+      "max_identical_inputs": 15,
+      "precision_threshold": 0.98,
+      "penalty_multiplier": 0.10
+    },
+    "hardware_verification": {
+      "block_unauthorized_peripherals": true,
+      "polling_rate_check": "active"
+    }
+  },
+  "ban_policy": {
+    "auto_ban": true,
+    "ban_duration_days": 365,
+    "shadow_ban_enabled": true,
+    "reason_code": "INTELIGENS-CRONUS-DETECTED"
+  },
+  "global_overrides": {
+    "force_red_theme_on_ban": true,
+    "disable_orbital_strike_on_suspicion": true
+  },
+  "access_levels": {
+    "RECRUT": 1,
+    "GENERAL": 5,
+    "AMIRAL": 10
+  }
+}
