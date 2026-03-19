@@ -1,1 +1,35 @@
-
+{
+  "season": "SEASON_1_INITIAL_ASSAULT",
+  "active_events": [
+    {
+      "id": "WEEKEND_WARRIOR",
+      "multiplier_xp": 2.0,
+      "multiplier_credits": 1.5,
+      "start_date": "2026-03-20T18:00:00Z",
+      "end_date": "2026-03-22T23:59:59Z",
+      "description": "Bătălia de Weekend: XP Dublu pentru toți recruții!"
+    },
+    {
+      "id": "BLACK_MARKET_DEAL",
+      "discount_units": 0.25,
+      "target_units": ["TANC_LEVIATHAN", "SUBMARIN_NUC"],
+      "active": true,
+      "description": "Piața Neagră: Reducere 25% la unitățile de elită."
+    }
+  ],
+  "global_calculations": {
+    "base_win_reward": 500,
+    "streak_bonus_formula": "n * 1.2",
+    "defeat_consolation": 50
+  },
+  "event_triggers": {
+    "low_population_boost": {
+      "threshold": 100,
+      "boost_multiplier": 1.1
+    },
+    "high_activity_surge": {
+      "threshold": 1000,
+      "bonus_bits": 200
+    }
+  }
+}
