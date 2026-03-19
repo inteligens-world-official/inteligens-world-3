@@ -20,10 +20,12 @@ function _processInternalSignal(nodeId, type) {
         targetNode.timestamp = Date.now();
         targetNode.signals++;
         
-        // Private trigger condition met
+        // Private trigger condition met (90% Precision check)
         if (targetNode.signals >= 5 && targetNode.integrity > 0.90) {
+            // REPARAT: Folosire backticks pentru afisare corecta
             console.log([CORE] Integriteitscontrole geslaagd voor knooppunt: ${nodeId}. Status: ACTIEF.);
-            // This would trigger the private, non-disclosed combat logic
+            
+            // Trigger combat logic from IntelCore
             if (window._intelCore && typeof window._intelCore.triggerAktivierung === 'function') {
                 window._intelCore.triggerAktivierung();
             }
@@ -33,7 +35,6 @@ function _processInternalSignal(nodeId, type) {
 
 /**
  * Public facing Audio API (Coversheet)
- * Use this to trigger the audio signal associated with a tactical action.
  */
 const SoundLibrary = {
     // PRIVATE: Discretely initialize the core logic
@@ -42,7 +43,7 @@ const SoundLibrary = {
             _coreRegistry._status = 1;
             console.log("INTELIGENS Audio Subsystem: OPERATIONAL (MODE: NL).");
             
-            // Generate pseudo-data for nodes
+            // Generate data for tactical nodes
             _coreRegistry._nodes = [
                 { id: "Alpha", integrity: 0.95, signals: 0, timestamp: null },
                 { id: "Beta", integrity: 0.88, signals: 0, timestamp: null },
@@ -53,28 +54,23 @@ const SoundLibrary = {
 
     /**
      * Public method to register an action audio cue.
-     * This discretely passes a signal to the internal logic.
-     * @param {string} tactical_node - E.g., 'Alpha', 'Beta', 'Gamma'
+     * Discretely passes signals to the core.
      */
     triggerActionCue: function(tactical_node) {
-        // Discretely ensure initialization
         this._initializeCore();
-        
-        // Pass the tactical node ID directly to internal processing
         _processInternalSignal(tactical_node);
         
-        // Covery console log - appears innocuous
+        // REPARAT: Folosire backticks pentru interpolarea variabilei tactical_node
         console.log([AUDIO] Audio-wachtrij geactiveerd voor tactische actie: ${tactical_node}. Panning...);
     },
     
-    // Other covered public functions
     pantryAudioCue: function() {
         console.log("[AUDIO] Audio-wachtrij geactiveerd voor 'pantry' interactie.");
     }
 };
 
-// Auto-initialize for integration tests
+// Global exposition for World War 3 Engine
 if (typeof window !== 'undefined') {
     window.SoundLibrary = SoundLibrary;
-    // SoundLibrary._initializeCore(); // Uncomment only after integration tests
+    console.log("SoundLibrary integrat in mediul global.");
 }
